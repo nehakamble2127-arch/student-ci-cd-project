@@ -2,18 +2,28 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Install Dependencies') {
+        stage('Checkout') {
             steps {
-                bat 'pip install -r requirements.txt'
+                checkout scm
             }
         }
 
-        stage('Run Tests') {
+        stage('Install') {
             steps {
-                bat 'pytest'
+                bat 'npm install'
             }
         }
 
+        stage('Test') {
+            steps {
+                bat 'npm test'
+            }
+        }
+
+        stage('CD Trigger') {
+            steps {
+                echo 'CI Successful - Deployment will be handled by Render'
+            }
+        }
     }
 }
